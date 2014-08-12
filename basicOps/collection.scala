@@ -70,3 +70,78 @@ val romanNumeral=Map(
   4->"IV"
 )
 println("number map:"+romanNumeral)
+
+//Test map on list
+val l=List(1,2,3,4)
+println(l.map(x=>x*2))
+
+def f(x:Int)=if(x>2) Some(x) else None
+
+println(l.map(x=>f(x)))
+
+def g(v:Int)=List(v-1,v,v+1)
+println(l.map(x=>g(x)))
+
+println(l.flatMap(x=>g(x)))
+
+//Test map on map
+//import scala.collection.immutable.Map
+println("----------------------")
+val m=scala.collection.immutable.Map(1->2,2->4,3->6)
+println("Map of map:"+m.map(v=>v._2))
+
+println(m.mapValues(v=>v*2))
+println(m.mapValues(v=>f(v)))
+
+println(m.flatMap(e=>List(e._2)))
+println(m.flatMap(e=>List(e)))
+
+def h(k:Int,v:Int)=if(v>2) Some(k->v) else None
+
+println(m.flatMap(e=>h(e._1,e._2)))
+println(m.flatMap{case (k,v)=>h(k,v)})
+
+m.filter(e=>f(e._2)!=None)
+println(m.filter{case (k,v) => f(v)!=None})
+println(m.filter{case (k,v) => f(v).isDefined})
+
+//test foldLeft
+def sum(list:List[Int]):Int=list.foldLeft(0)(_+_) //0 is the init result val
+val fl=List(1,2,3)
+println("list sum fold left:"+sum(fl))
+
+def average(list:List[Double]):Double=list match{
+  case head::tail => tail.foldLeft( (head,1.0) )((r,c) =>((r._1 + (c/r._2)) * r._2 / (r._2+1), r._2+1) )._1
+  case Nil=> -1
+}
+
+val dfl=List(1.0,2.0,3.0)
+println("list average fold left:"+average(dfl))
+
+val fm=Map("first"->1,"second"->2)
+println(fm.foldLeft(0){case (a,(k,v))=>a+v})
+
+val abc=List("A","B","C")
+def add(res:String,x:String)={
+  println("op: $res + $x = ${res + x}")
+  res+x
+}
+abc.reduceLeft(add)
+
+//Test groupby
+val cats=List("Tiger","Puma","Lion","Leopard","Bobcat")
+val groupByLength=cats.groupBy(_.length) //List->Map(key->List)
+println(groupByLength)
+
+//Test reduce
+val fruits=List("apple","apple","orange","mango","mango grape")
+val word = fruits.flatMap(_.split(" "))
+val m22 = word.map(word => (word,1)).groupBy(_._1)
+val reduce1 = m22.map(word => (word._1,word._2.foldLeft(0)((sum,c) => sum+ c._2)))
+println(m22)
+println(reduce1)
+
+val reduce = m22.map(word => (word._1,word._2.map(_=>1).reduce(_+_)))
+println(reduce)
+
+

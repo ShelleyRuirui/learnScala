@@ -13,3 +13,12 @@ val y = "abcd".substring(2)
 println(x==y) //true like equals method for Java
 println(x eq y)  //false  for AnyRef like == in Java comparing references
 
+//String
+println(
+  """Test
+    |To see
+    |If it works
+  """.stripMargin)
+
+//' is needed as yield is a keyword in scala
+Thread.`yield`()

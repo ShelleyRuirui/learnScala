@@ -20,6 +20,16 @@ object FuncDef {
     for(arg<-args)
       println(arg)
 
+  def plainOldSum(a:Int,b:Int)=a+b
+
+  def curriedSum(x:Int)(y:Int)=x+y
+
+  def first(x:Int)=(y:Int)=>x+y
+
+  val second=first(1)
+
+  val onePlus=curriedSum(1)_
+
   def main(args: Array[String]): Unit = {
     println(add1(1,2))
     println(sum2(1,2,3))
@@ -28,5 +38,11 @@ object FuncDef {
 
     val array=Array[String]("a","b","c")
     echo(array:_*)
+
+    println(plainOldSum(1,2))
+    println(curriedSum(3)(4))
+    println(first(2)(3))
+    println(second(2))
+    println(onePlus(5))
   }
 }
